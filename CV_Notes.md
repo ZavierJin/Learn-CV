@@ -1,8 +1,16 @@
 # 计算机视觉
 
+## Reference
+
+https://www.bilibili.com/video/BV1nJ411z7fe?spm_id_from=333.999.0.0
+
+https://github.com/Zhang-Each/Awesome-CS-Course-Learning-Notes/tree/master/Stanford-CS231N-NeuralNetwork%26DL
+
 P7
 
-## KNN
+## 引入
+
+### KNN
 
 - 最邻近分类：
   - 训练：记录所有数据和标签
@@ -24,7 +32,7 @@ P7
   - 距离函数对于图像视觉感知很难衡量
   - 维数危机，运算复杂度指数级
 
-## 线性分类
+### 线性分类
 
 -  $f(x,W) = Wx + b$，多样本输入$f(X,W) = WX + b$
 -  系数矩阵W: $10*3072$ (每一行代表某一类别的模板)，输入向量x: $32*32*3=3072$，偏置b: $10*1$
@@ -47,7 +55,19 @@ P7
 - 多项逻辑斯帝损失，与概率有关，使正确分类的概率趋向于1。
 - 单个样本的损失函数$\displaystyle L_i=-log(\frac{e^{s_{y_i}}}{\sum_j e^{s_j}})$。另一种计算方法是对$s$先取指数再归1化，然后$y_i$位置的值就是$L_i$。
 
-## 优化方法
+## 误差传递
+
+### 梯度计算
+
+-  计算图，每个模块间链式传递$$\displaystyle \frac{\partial L}{\partial x}=\frac{\partial f}{\partial x}\frac{\partial L}{\partial f} $$.
+- 如果输入的量x是向量，单个模块的偏导$$\displaystyle \frac{\partial f}{\partial x}$$可以整合为Jacobian矩阵$$\displaystyle [\frac{\partial f_j}{\partial x_i}]$$，因为模块是多入多出的。
+- 如果链式求导的中间变量是向量，需要对每个偏导累加。
+- 梯度的维数与向量的维数相同
+- 例：$$\displaystyle 1_{k=i}=\left\{\begin{matrix} 1, k=i\\0, k!=i\end{matrix}\right.$$。
+
+![Screenshot 2022-05-19 163511](D:\zju\study\08_大四下\课外阅读\Learn-CV\Image\Screenshot 2022-05-19 163511.png)
+
+### 优化方法
 
 - 梯度下降法：计算梯度（解析法和数值法，数值法在变量多时太耗时），步长*梯度来下降。步长也称学习率。
 - 其他方法
