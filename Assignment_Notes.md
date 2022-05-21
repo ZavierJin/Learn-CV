@@ -1,5 +1,9 @@
 # 练习记录
 
+## Reference
+
+https://github.com/Zhang-Each/Awesome-CS-Course-Learning-Notes/tree/master/Stanford-CS231N-NeuralNetwork%26DL
+
 ## KNN
 
 将图像利用numpy完全向量化再进行运算能够显著提高运算速度。

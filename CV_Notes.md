@@ -4,9 +4,7 @@
 
 https://www.bilibili.com/video/BV1nJ411z7fe?spm_id_from=333.999.0.0
 
-https://github.com/Zhang-Each/Awesome-CS-Course-Learning-Notes/tree/master/Stanford-CS231N-NeuralNetwork%26DL
-
-P7
+P8
 
 ## 引入
 
@@ -59,8 +57,8 @@ P7
 
 ### 梯度计算
 
--  计算图，每个模块间链式传递$$\displaystyle \frac{\partial L}{\partial x}=\frac{\partial f}{\partial x}\frac{\partial L}{\partial f} $$.
-- 如果输入的量x是向量，单个模块的偏导$$\displaystyle \frac{\partial f}{\partial x}$$可以整合为Jacobian矩阵$$\displaystyle [\frac{\partial f_j}{\partial x_i}]$$，因为模块是多入多出的。
+-  计算图，每层间链式传递$$\displaystyle \frac{\partial L}{\partial x}=\frac{\partial f}{\partial x}\frac{\partial L}{\partial f} $$.
+- 如果输入的量x是向量，单层的偏导$$\displaystyle \frac{\partial f}{\partial x}$$可以整合为Jacobian矩阵$$\displaystyle [\frac{\partial f_j}{\partial x_i}]$$，因为模块是多入多出的。
 - 如果链式求导的中间变量是向量，需要对每个偏导累加。
 - 梯度的维数与向量的维数相同
 - 例：$$\displaystyle 1_{k=i}=\left\{\begin{matrix} 1, k=i\\0, k!=i\end{matrix}\right.$$。
@@ -74,3 +72,38 @@ P7
   - 带动量的梯度下降
   - Adam优化
 - 当数据集很大时，即使用解析法计算梯度也很慢，因此可以采样随机梯度下降法(SGD)。不计算整个数据集的损失和梯度，而是在每次迭代中选取部分训练集(MiniBatch)，估计误差总和和梯度。
+
+## 神经网络
+
+- 全连接网络：输入层、隐藏层、输出层
+- 激活函数：非线性，softmax、ReLU
+- 算法实现：每个神经元的输入先与权重相乘，再累加，可以转化为矩阵运算。
+- 2012年，第一个攻克的领域是语音识别，同年卷积神经网络让图像识别领域也开始使用
+  - Context-Dependent Pre-trained Deep Neural Networks for Large Vocabulary Speech Recognition
+  - Imagenet classification  with deep convolutional neural networks
+
+## 卷积神经网络
+
+### 卷积层
+
+- 卷积核Filter与输入图像深度相同，$w^Tx+b$小区域分别展成1维后点积再加偏置。严格上说是滤波，并不是数字图像处理领域的卷积，那边的要旋转180度。
+- **维数计算**：NxNxD的输入图用FxFxD的卷积核，采用S的步长，得到的输出边长为$O=(N-F)/S+1$，输出OxOx1的结果
+- **边缘填充**：为了保持输出和输入的边长相同。否则在深度网络中边长会迅速变小，可用信息量会变少。单边填充P，则输出的边长计算公式变化为：$O=(N+2*P-F)/S+1$.
+- **每层参数**：$(F*F*D+1)*num$，其中num是卷积核个数，+1是因为有偏置项
+- **输出的深度**是由卷积核个数决定的，一般是2的次方。如果有多个核，可以分别对输入进行卷积，每次得到一张激活映射（activation map），最后对多个结果沿深度方向组合。
+- 特征图展示了当输入是什么状态时使激活函数输出最大
+- 感受视野（reception field），FxF
+- 卷积核大小、步长、个数等都是超参数
+
+### 池化层
+
+- 平面上的降采样，深度方向不变。使生成的结果更小更容易控制
+- 步长一般使移动过程不重叠。池化一般不需要使用边缘填充。
+- 常见方法：最大值池化，因为激活映射得到的是卷积核在空间位置的受激程度。在类似识别和检测任务中，使用最大值来激活比较好。
+- 常见大小：2*2
+
+### 全连接层
+
+- 将输出图像拉成1维，与普通的神经网络相连。
+- 最后的输出图像每个元素描述的是复杂的特征，是前面一系列复杂的受激活情况
+
